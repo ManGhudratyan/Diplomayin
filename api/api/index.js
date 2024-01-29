@@ -2,31 +2,32 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const authRoute = require("./routes/auth");
-const userRoute = require("./routes/users");
-const movieRoute = require("./routes/movies");
-const listRoute = require("./routes/lists");
+const router =require('./routes/index.js');
+const cors = require('./middlewares/cors.js');
 
 dotenv.config();
 
+// TODO global error handler
+// TODO cors error handler
+
+const {MONGO_URL} = process.env;
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect('mongodb://127.0.0.1:27017/myapp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => console.log("DB Connection Successfull"))
+  .then(() => console.log("DB connection is successful"))
   .catch((err) => {
     console.error(err);
   });
 
+app.use(cors);
 app.use(express.json());
+app.use(router);
 
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoute);
-app.use("/api/movies", movieRoute);
-app.use("/api/lists", listRoute);
 
+console.log(router, 88888)
 app.listen(8800, () => {
-  console.log("Backend server is running!");
+  console.log("server is running!");
 });
