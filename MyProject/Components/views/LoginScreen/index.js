@@ -85,21 +85,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 20,
     width: '100%',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   noAccountText: {
     marginTop: 20,
     color: '#555',
-    fontSize: 16,
+    fontSize: 16
   },
   registerLink: {
     color: 'blue',
-    textDecorationLine: 'underline',
+    textDecorationLine: 'underline'
   },
 });
 
