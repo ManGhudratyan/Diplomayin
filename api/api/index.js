@@ -12,7 +12,7 @@ dotenv.config();
 
 const {MONGO_URL} = process.env;
 mongoose
-  .connect('mongodb://127.0.0.1:27017/myapp', {
+  .connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
