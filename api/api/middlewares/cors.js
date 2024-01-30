@@ -15,7 +15,6 @@ const cors = (req, res, next) => {
         'Content-Type, Authorization, X-Token',
       );
       if (req.method === 'OPTIONS') {
-        // Handle OPTIONS request (pre-flight)
         res.sendStatus(200);
       }
     }

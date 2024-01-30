@@ -29,5 +29,5 @@ app.use(router);
 
 console.log(router, 88888)
 app.listen(8800, () => {
-  console.log("server is running!");
+  console.log("Server is running!");
 });
