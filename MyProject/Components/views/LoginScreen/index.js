@@ -14,9 +14,30 @@ const LoginScreen = () => {
         [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
       );
     } else {
-      navigation.navigate('TabNavigation');
+      axios.post('your_login_endpoint', {
+        username: username,
+        password: password
+      })
+      .then(response => {
+        if (response.data.success) {
+          navigation.navigate('TabNavigation');
+        } else {
+          Alert.alert(
+            "Login Failed", "Invalid username or password.",
+            [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+          );
+        }
+      })
+      .catch(error => {
+        console.error('Error logging in: ', error);
+        Alert.alert(
+          "Error", "An error occurred while attempting to log in.",
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+        );
+      });
     }
   };
+  
 
   const handleRegistration = () => {
     navigation.navigate('RegistrationScreen');
