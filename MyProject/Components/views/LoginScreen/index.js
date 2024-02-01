@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+
 
   const handleLogin = () => {
     if (!username.trim() || !password.trim()) {
@@ -14,30 +16,43 @@ const LoginScreen = () => {
         [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
       );
     } else {
-      axios.post('your_login_endpoint', {
+      axios.post('http://localhost:3001/api/login', {
         username: username,
         password: password
       })
-      .then(response => {
-        if (response.data.success) {
-          navigation.navigate('TabNavigation');
-        } else {
-          Alert.alert(
-            "Login Failed", "Invalid username or password.",
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
-          );
-        }
-      })
-      .catch(error => {
-        console.error('Error logging in: ', error);
-        Alert.alert(
-          "Error", "An error occurred while attempting to log in.",
-          [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
-        );
-      });
+        .then(response => {
+          if (response.data.success) {
+            navigation.navigate('TabNavigation');
+          } else {
+            Alert.alert(
+              "Login Failed", "Invalid username or password.",
+              [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+            );
+          }
+        })
+        .catch(error => {
+          console.error('Error logging in: ', error);
+          if (error.response) {
+            Alert.alert(
+              "Error", `Server responded with status code ${error.response.status}`,
+              [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+            );
+          } else if (error.request) {
+            Alert.alert(
+              "Error", "No response received from server",
+              [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+            );
+          } else {
+            Alert.alert(
+              "Error", "An error occurred while attempting to log in.",
+              [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+            );
+          }
+        });
     }
   };
-  
+
+
 
   const handleRegistration = () => {
     navigation.navigate('RegistrationScreen');
@@ -57,9 +72,6 @@ const LoginScreen = () => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
-      {/* <TouchableOpacity>
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-      </TouchableOpacity> */}
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -93,12 +105,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 15,
     fontSize: 16,
-  },
-  forgotPassword: {
-    marginTop: 10,
-    color: 'blue',
-    textAlign: 'right',
-    fontSize: 14,
   },
   loginButton: {
     backgroundColor: 'black',
