@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const verify = require("../verifyToken");
+const HttpError  = require("http-errors");
 //UPDATE
 
 router.put("/:id", verify, async (req, res) => {
@@ -57,19 +58,21 @@ router.get("/find/:id", async (req, res) => {
 });
 
 //GET ALL
-router.get("/", verify, async (req, res) => {
-  const query = req.query.new;
-  if (req.user.isAdmin) {
-    try {
-      const users = query
-        ? await User.find().sort({ _id: -1 }).limit(5)
-        : await User.find();
-      res.status(200).json(users);
-    } catch (err) {
-      res.status(500).json(err);
+router.get("/", async (req, res, next) => {
+  try{
+    const query = req.query.new;
+    const {isAdmin}=req;
+    if(!isAdmin){
+      throw  HttpError(401, 'not authorized');
     }
-  } else {
-    res.status(403).json("You are not allowed to see all users!");
+    const users = query
+      ? await User.find().sort({ _id: -1 }).limit(5)
+      : await User.find();
+    res.status(200).json(users);
+  }
+  catch(er){
+    // TODO errors should be send to the error handler middleware
+    next(er)
   }
 });
 
