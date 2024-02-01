@@ -61,21 +61,22 @@ router.get("/find/:id", async (req, res) => {
 router.get("/", async (req, res, next) => {
   try{
     const query = req.query.new;
-    const {isAdmin}=req;
-    if(!isAdmin){
-      throw  HttpError(401, 'not authorized');
-    }
-    const users = query
+    // const {isAdmin}=req;
+    // if(!isAdmin) {
+    //   throw HttpError(401, 'not authorized');
+    // }
+      const users = query
       ? await User.find().sort({ _id: -1 }).limit(5)
       : await User.find();
-    res.status(200).json(users);
+       res.status(200).json({
+         users
+       });
   }
   catch(er){
     // TODO errors should be send to the error handler middleware
     next(er)
   }
 });
-
 //GET USER STATS
 router.get("/stats", async (req, res) => {
   const today = new Date();
