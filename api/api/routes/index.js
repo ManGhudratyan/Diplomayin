@@ -1,9 +1,10 @@
-const router = require("express").Router();
-const userRoute = require("./users");
+const router = require('express').Router();
+const userRoute = require('./users');
 const User = require('../models/User');
-router.use("/api/users", userRoute);
-router.use("/api/login", userRoute);
-router.use("/api/register", userRoute);
+
+router.use('/api/users', userRoute);
+router.use('/api/login', userRoute);
+router.use('/api/register', userRoute);
 
 router.get('/', async (req, res, next) => {
   try {
