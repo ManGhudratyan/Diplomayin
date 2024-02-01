@@ -1,0 +1,7 @@
+============= TODOS LIST ===============
+1. models names should be plural.
+1. create controller folder.
+2. create a controller file for each model (ex. Users->UsersController.js)
+3. write all middlewares for certain model into corresponding controller file
+4. call controller middlewares into routes
+5. create users registration and login APIs.
